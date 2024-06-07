@@ -1,8 +1,8 @@
-const { db, IMAGES_COLLECTION } = require("../config");
+const { db } = require("../config");
 
-const create = async (data) => {
+const create = async (collection, data) => {
   try {
-    const docRef = await db.collection(IMAGES_COLLECTION).add(data);
+    const docRef = await db.collection(collection).add(data);
     return docRef.id;
   } catch (error) {
     throw new Error(error);
