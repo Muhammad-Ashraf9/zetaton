@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
       " "
     );
     let error = new Error(errorMessages);
-    error.statusCode = 422;
+    error.statusCode = 400;
     next(error);
   } else {
     next();
