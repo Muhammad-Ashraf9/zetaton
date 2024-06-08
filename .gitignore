@@ -130,5 +130,5 @@ dist
 .pnp.*
 
 
-# credential file
-zetaton-task-cred.json
+# # credential file
+# zetaton-task-cred.json
