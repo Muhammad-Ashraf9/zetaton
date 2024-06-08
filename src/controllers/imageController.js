@@ -4,6 +4,7 @@ const {
   getAll,
   getById,
   update,
+  remove,
 } = require("../services/firebaseService");
 
 exports.createImage = async (req, res, next) => {
@@ -76,6 +77,32 @@ exports.updateImage = async (req, res, next) => {
     await update(IMAGES_COLLECTION, id, image);
 
     res.status(200).json({ message: "Image updated successfully" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteImage = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      const error = new Error("Image id is required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const image = await getById(IMAGES_COLLECTION, id);
+
+    if (!image) {
+      const error = new Error("Image not found");
+      error.statusCode = 404;
+      throw error;
+    }
+
+    await remove(IMAGES_COLLECTION, id);
+
+    res.status(200).json({ message: "Image deleted successfully" });
   } catch (error) {
     next(error);
   }

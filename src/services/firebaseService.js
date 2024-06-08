@@ -12,7 +12,6 @@ const create = async (collection, data) => {
 const getAll = async (collection) => {
   try {
     const snapshot = await db.collection(collection).get();
-    console.log("snapshot :>> ", snapshot);
     const data = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -27,7 +26,6 @@ const getById = async (collection, id) => {
   try {
     const doc = await db.collection(collection).doc(id).get();
     if (!doc.exists) {
-      console.log("doc.exists :>> ", doc.exists);
       const error = new Error("Document not found");
       error.statusCode = 404;
       throw error;
@@ -44,6 +42,12 @@ const update = async (collection, id, data) => {
     const doc = db.collection(collection).doc(id);
 
     const docData = (await doc.get()).data();
+
+    if (!docData) {
+      const error = new Error("Document not found");
+      error.statusCode = 404;
+      throw error;
+    }
 
     data.createdAt = docData.createdAt;
 

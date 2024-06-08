@@ -7,14 +7,24 @@ const {
   getAllImages,
   getImageById,
   updateImage,
+  deleteImage,
 } = require("../controllers/imageController");
-const { createImageInput, validate } = require("../middlewares/validation");
+const {
+  createImageInput,
+  validate,
+  imageIdParam,
+} = require("../middlewares/validation");
 
 router
   .route("/")
   .post(createImageInput(), validate, createImage)
   .get(getAllImages);
 
-router.route("/:id").get(getImageById).put(updateImage);
+router
+  .route("/:id")
+  .all(imageIdParam(), validate)
+  .get(getImageById)
+  .put(updateImage)
+  .delete(deleteImage);
 
 module.exports = router;
