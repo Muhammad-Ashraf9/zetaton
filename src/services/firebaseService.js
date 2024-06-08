@@ -35,8 +35,24 @@ const getById = async (collection, id) => {
   }
 };
 
+const update = async (collection, id, data) => {
+  try {
+    //to get the createdAt field
+    const doc = db.collection(collection).doc(id);
+
+    const docData = (await doc.get()).data();
+
+    data.createdAt = docData.createdAt;
+
+    await doc.update({ ...data, updatedAt: new Date() });
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

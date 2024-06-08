@@ -6,6 +6,7 @@ const {
   createImage,
   getAllImages,
   getImageById,
+  updateImage,
 } = require("../controllers/imageController");
 const { createImageInput, validate } = require("../middlewares/validation");
 
@@ -14,6 +15,6 @@ router
   .post(createImageInput(), validate, createImage)
   .get(getAllImages);
 
-router.route("/:id").get(getImageById);
+router.route("/:id").get(getImageById).put(updateImage);
 
 module.exports = router;
