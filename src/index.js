@@ -7,6 +7,7 @@ dotenv.config({
 });
 
 const imageRoutes = require("./routes/imageRoutes");
+const shortenLinkRoutes = require("./routes/linkShortenerRoutes");
 
 const { PORT } = require("./config");
 const {
@@ -27,6 +28,7 @@ app.use(express.json());
 
 // Routes
 app.use("/api/images", imageRoutes);
+app.use("/api/shorten", shortenLinkRoutes);
 
 // Error handling middlewares
 app.use(notFound);
