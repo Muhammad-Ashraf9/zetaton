@@ -5,7 +5,7 @@ const create = async (collection, data) => {
     const docRef = await db.collection(collection).add(data);
     return docRef.id;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -19,7 +19,7 @@ const getAll = async (collection) => {
     }));
     return data;
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -27,11 +27,14 @@ const getById = async (collection, id) => {
   try {
     const doc = await db.collection(collection).doc(id).get();
     if (!doc.exists) {
-      throw new Error("Document not found");
+      console.log("doc.exists :>> ", doc.exists);
+      const error = new Error("Document not found");
+      error.statusCode = 404;
+      throw error;
     }
     return { id: doc.id, ...doc.data() };
   } catch (error) {
-    throw new Error(error);
+    throw error;
   }
 };
 
@@ -46,7 +49,15 @@ const update = async (collection, id, data) => {
 
     await doc.update({ ...data, updatedAt: new Date() });
   } catch (error) {
-    throw new Error(error);
+    throw error;
+  }
+};
+
+const remove = async (collection, id) => {
+  try {
+    await db.collection(collection).doc(id).delete();
+  } catch (error) {
+    throw error;
   }
 };
 
@@ -55,4 +66,5 @@ module.exports = {
   getAll,
   getById,
   update,
+  remove,
 };
